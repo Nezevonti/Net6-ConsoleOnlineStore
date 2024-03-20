@@ -7,14 +7,16 @@ using System.Threading.Tasks;
 
 namespace StoreDAL.Entities
 {
-    // ToDo: add atribute here
+    [Table("customer_orders")]
     public class CustomerOrder:BaseEntity
     {
-        // ToDo: add atribute here
+        [ForeignKey("User")]
+        [Column("customer_id")]
         public int UserId { get; set; }
-        // ToDo: add atribute here
+        [Column("operation_time")]
         public string OperationTime { get; set; }
-        // ToDo: add atribute here
+        [ForeignKey("OrderState")]
+        [Column("order_state_id")]
         public int OrderStateId { get; set; }
 
         public User User { get; set; }

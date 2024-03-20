@@ -8,18 +8,19 @@ using System.Threading.Tasks;
 
 namespace StoreDAL.Entities
 {
-    // ToDo: add atribute here
+    [Table("users")]
     public class User:BaseEntity
     {
-        // ToDo: add atribute here
+        [Column("first_name")]
         public string Name { get; set; }
-        // ToDo: add atribute here
+        [Column("last_name")]
         public string LastName { get; set; }
-        // ToDo: add atribute here
+        [Column("login")]
         public string Login { get; set; }
-        // ToDo: add atribute here
+        [Column("password")]
         public string Password { get; set; }
-        // ToDo: add atribute here
+        [ForeignKey("UserRole")]
+        [Column("user_role_id")]
         public int RoleId { get; set; }
 
         public UserRole Role { get; set; }
