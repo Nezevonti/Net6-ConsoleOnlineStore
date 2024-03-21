@@ -25,7 +25,7 @@ namespace StoreDAL.Repository
 
         public void Delete(UserRole entity)
         {
-            throw new NotImplementedException();
+            dbSet.Remove(entity);
         }
 
         public void DeleteById(int id)
@@ -45,7 +45,7 @@ namespace StoreDAL.Repository
 
         public IEnumerable<UserRole> GetAll(int pageNumber, int RowCount)
         {
-            throw new NotImplementedException();
+            return dbSet.OrderByDescending(x => x.Id).Where(x => x.Id >= ((pageNumber-1)*RowCount)).Take(RowCount).ToList();
         }
 
         public UserRole GetById(int id)
@@ -55,7 +55,8 @@ namespace StoreDAL.Repository
 
         public void Update(UserRole entity)
         {
-            throw new NotImplementedException();
+            dbSet.Update(entity);
+            context.SaveChanges();
         }
     }
 }
