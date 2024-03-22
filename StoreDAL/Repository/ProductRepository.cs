@@ -11,15 +11,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace StoreDAL.Repository
 {
-    public class ProductRepository : IProductRepository
+    public class ProductRepository : AbstractRepository,IProductRepository
     {
         
         private readonly StoreDbContext shopContext;
 
-        public ProductRepository()
+        public ProductRepository(StoreDbContext context):base(context)
         {
-            var factory = new StoreDbFactory(new TestDataFactory());
-            this.shopContext = factory.CreateContext();
+            this.shopContext = context;
         }
 
         public void Add(Product entity)

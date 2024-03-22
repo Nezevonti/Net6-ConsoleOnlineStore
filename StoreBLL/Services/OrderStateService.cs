@@ -39,7 +39,8 @@ namespace StoreBLL.Services
         }
         public void Update(AbstractModel model)
         {
-            throw new NotImplementedException();
+            var x = (OrderStateModel)model;
+            repository.Update(new OrderState(x.Id, x.StateName));
         }
     }
 }

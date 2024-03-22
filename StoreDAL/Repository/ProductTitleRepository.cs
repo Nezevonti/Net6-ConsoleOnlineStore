@@ -1,4 +1,6 @@
-﻿using StoreDAL.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using StoreDAL.Data;
+using StoreDAL.Entities;
 using StoreDAL.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -8,41 +10,55 @@ using System.Threading.Tasks;
 
 namespace StoreDAL.Repository
 {
-    public class ProductTitleRepository : IProductTitleRepository
+    public class ProductTitleRepository : AbstractRepository,IProductTitleRepository
     {
+        private readonly DbSet<ProductTitle> dbSet;
+
+        public ProductTitleRepository(StoreDbContext context) : base(context)
+        {
+            dbSet = context.Set<ProductTitle>();
+        }
+
         public void Add(ProductTitle entity)
         {
-            throw new NotImplementedException();
+            dbSet.Add(entity);
+            context.SaveChanges();
         }
 
         public void Delete(ProductTitle entity)
         {
-            throw new NotImplementedException();
+            dbSet.Remove(entity);
+            context.SaveChanges();
         }
 
         public void DeleteById(int id)
         {
-            throw new NotImplementedException();
+            var entity = dbSet.Find(id);
+            if (entity != null)
+            {
+                Delete(entity);
+            }
         }
 
         public IEnumerable<ProductTitle> GetAll()
         {
-            throw new NotImplementedException();
+            return dbSet.ToList();
         }
 
         public IEnumerable<ProductTitle> GetAll(int pageNumber, int rowCount)
         {
-            throw new NotImplementedException();
+            return dbSet.OrderByDescending(x => x.Id).Where(x => x.Id >= ((pageNumber - 1) * rowCount)).Take(rowCount).ToList();
         }
 
         public ProductTitle GetById(int id)
         {
-            throw new NotImplementedException();
+            return dbSet.Find(id);
         }
 
         public void Update(ProductTitle entity)
         {
-            throw new NotImplementedException();
+            dbSet.Update(entity);
+            context.SaveChanges();
         }
     }
 }
