@@ -13,23 +13,21 @@ namespace StoreDAL.Repository
 {
     public class ProductRepository : AbstractRepository,IProductRepository
     {
-        
-        private readonly StoreDbContext shopContext;
+
+        //private readonly StoreDbContext shopContext;
+        private readonly DbSet<Product> dbSet;
 
         public ProductRepository(StoreDbContext context):base(context)
         {
-            this.shopContext = context;
+            this.dbSet = context.Set<Product>();
         }
 
         public void Add(Product entity)
         {
             try
             {
-                using(this.shopContext)
-                {
-                    this.shopContext.Products.Add(entity);
-                    this.shopContext.SaveChanges();
-                }
+                this.dbSet.Add(entity);
+                context.SaveChanges();
             }
             catch(Exception e)
             {
@@ -42,11 +40,8 @@ namespace StoreDAL.Repository
         {
             try
             {
-                using (this.shopContext)
-                {
-                    this.shopContext.Products.Remove(entity);
-                    this.shopContext.SaveChanges();
-                }
+                this.dbSet.Remove(entity);
+                context.SaveChanges();
             }
             catch (Exception e)
             {
@@ -58,13 +53,9 @@ namespace StoreDAL.Repository
         {
             try
             {
-                using (this.shopContext)
-                {
-                    var entity = new Product();
-                    entity.Id = id;
-                    this.shopContext.Products.Remove(entity);
-                    this.shopContext.SaveChanges();
-                }
+                var entity = new Product();
+                entity.Id = id;
+                this.Delete(entity);
             }
             catch (Exception e)
             {
@@ -74,99 +65,23 @@ namespace StoreDAL.Repository
 
         public IEnumerable<Product> GetAll()
         {
-            List<Product> products = new List<Product>();
-
-            this.shopContext.Products.Load();
-            this.shopContext.Manufacturers.Load();
-            this.shopContext.ProductTitles.Load();
-            this.shopContext.Categories.Load();
-            try
-            {
-                using (this.shopContext)
-                {
-                    var all_products= this.shopContext.Products.OrderBy(t => t.Id);
-
-                    foreach (var product in all_products)
-                    {
-                        products.Add(product);  
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-
-            return products;
+            return dbSet.ToList();
         }
 
         public IEnumerable<Product> GetAll(int pageNumber, int rowCount)
         {
-            List<Product> products = new List<Product>();
-
-            this.shopContext.Products.Load();
-            this.shopContext.Manufacturers.Load();
-            this.shopContext.ProductTitles.Load();
-            this.shopContext.Categories.Load();
-            try
-            {
-                using (this.shopContext)
-                {
-                    var all_products = this.shopContext.Products.OrderBy(t => t.Id);
-
-                    foreach (var product in all_products)
-                    {
-                        products.Add(product);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-
-            return products;
+            return this.GetAll().Skip(pageNumber*rowCount).Take(rowCount);
         }
 
         public Product GetById(int id)
         {
-            Product product;
-
-            this.shopContext.Products.Load();
-            this.shopContext.Manufacturers.Load();
-            this.shopContext.ProductTitles.Load();
-            this.shopContext.Categories.Load();
-            try
-            {
-                using (this.shopContext)
-                {
-                    product = this.shopContext.Products.Where(t => t.Id == id).First();
-
-                    
-                }
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-
-            return product;
+            return dbSet.Find(id);
         }
 
         public void Update(Product entity)
         {
-            try
-            {
-                using (this.shopContext)
-                {
-                    this.shopContext.Products.Update(entity);
-                    this.shopContext.SaveChanges();
-                }
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            dbSet.Update(entity);
+            context.SaveChanges();
         }
     }
 }

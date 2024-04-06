@@ -1,3 +1,4 @@
+using ConsoleApp.Controllers;
 using ConsoleApp1;
 using StoreDAL.Data;
 
@@ -9,8 +10,8 @@ public class GuestMainMenu:AbstractMenuCreator
     {
         (ConsoleKey id, string caption, Action action)[] array = {
             (ConsoleKey.F1,"Login", UserMenuController.Login)   ///*()=>{Console.WriteLine("Login Action");}*/
-            ,(ConsoleKey.F2,"Show product list", ()=>{Console.WriteLine("Show product list");})
-            ,(ConsoleKey.F3,"Register", ()=>{Console.WriteLine("Are you reali want to register");})
+            ,(ConsoleKey.F2,"Show product list", ProductController.ShowAllProducts)
+            ,(ConsoleKey.F3,"Register",UserMenuController.Register)
         };
         return array;
     }

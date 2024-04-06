@@ -1,7 +1,10 @@
 using ConsoleMenu;
 using ConsoleMenu.Builder;
+using StoreBLL.Models;
+using StoreBLL.Services;
 using StoreDAL.Data;
 using StoreDAL.Data.InitDataFactory;
+using StoreDAL.Entities;
 
 namespace ConsoleApp1;
 
@@ -35,24 +38,76 @@ public static class UserMenuController
     { 
         get { return context; } 
     }
-    public static void Login()
+    public static void Login() //Fix!
     {
         Console.WriteLine("Login: ");
         var login =Console.ReadLine();
         Console.WriteLine("Password: ");
         var password = Console.ReadLine();
-        if(login=="admin")
-        {
-            userId = 1;
-            userRole = UserRoles.Administrator;
-        }
-        if(login=="user")
-        {
-            userId= 1;
-            userRole = UserRoles.RegistredCustomer;
-        }
-        //ToDo
 
+        switch(login)
+        {
+            case "admin":
+                userId = 1;
+                userRole = UserRoles.Administrator;
+            break;
+            case "guest":
+                userId = 2;
+                userRole = UserRoles.Guest;
+            break;
+            default:
+                userRole = UserRoles.RegistredCustomer;
+
+                UserService service = new(context);
+
+                var enumerable = service.GetAll();
+
+                enumerable = enumerable.OrderByDescending(u => u.Id);
+
+                List<UserModel> users = enumerable.Select(g => (UserModel)g).ToList();
+
+                userId = users.Where(u => u.Login == login).Select(u => u.Id).FirstOrDefault();
+            break;
+        }
+
+    }
+
+    public static void Register()
+    {
+        Console.WriteLine("Login: ");
+        var login = Console.ReadLine();
+        Console.WriteLine("Password: ");
+        var password = Console.ReadLine();
+        Console.WriteLine("first name: ");
+        var first_name = Console.ReadLine();
+        Console.WriteLine("last name: ");
+        var last_name = Console.ReadLine();
+
+
+        UserService service = new(context);
+
+        var enumerable = service.GetAll();
+        
+        enumerable = enumerable.OrderByDescending(u => u.Id);
+
+        List<UserModel> users = enumerable.Select(g => (UserModel)g).ToList();
+        
+        if(users.Any(u => u.Login == login))
+        {
+            Console.WriteLine("user with this login already exists");
+
+            return;
+        }
+
+        int newId = users.FirstOrDefault().Id;
+
+        
+
+        UserModel newUser = new(newId+1, first_name, last_name, login, password, 2);
+
+        service.Add(newUser);
+
+        //Login();
     }
 
     public static void Logout()
@@ -60,7 +115,7 @@ public static class UserMenuController
         userId = 0;
         userRole = UserRoles.Guest;
     }
-
+    
     public static void Start()
     {
         ConsoleKey resKey;

@@ -18,6 +18,12 @@ namespace ConsoleMenu
         {
             this.getAll = getAll;
         }
+
+        public ContextMenu(GuestContextMenuHandler controller, Func<IEnumerable<AbstractModel>> getAll) : base(controller.GenerateMenuItems())
+        {
+            this.getAll = getAll;
+        }
+
         public ContextMenu(Func<(ConsoleKey id, string caption, Action action)[]> GenerateMenuItems, Func<IEnumerable<AbstractModel>> getAll):base(GenerateMenuItems())
         {
             this.getAll = getAll;

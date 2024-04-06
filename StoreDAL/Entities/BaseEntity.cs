@@ -10,6 +10,7 @@ namespace StoreDAL.Entities
 {
     public abstract class BaseEntity
     {
+        [Key]
         [Column("id")]
         public int Id { get; set; }
         protected BaseEntity(int id)

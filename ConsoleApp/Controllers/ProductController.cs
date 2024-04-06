@@ -1,10 +1,15 @@
-﻿using ConsoleApp1;
+﻿using ConsoleApp.Handlers.ContextMenu;
+using ConsoleApp1;
+using ConsoleMenu;
+using StoreBLL.Models;
+using StoreBLL.Services;
 using StoreDAL.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ConsoleApp.Helpers;
 
 namespace ConsoleApp.Controllers
 {
@@ -31,7 +36,10 @@ namespace ConsoleApp.Controllers
         }
         public static void ShowAllProducts()
         {
-            throw new NotImplementedException();
+            var service = new ProductService(context);
+            var ContextMenu = new ContextMenu(new GuestContextMenuHandler(service,InputHelper.ReadProductModel),service.GetAll);
+            ContextMenu.Run();
+
         }
 
         public static void AddCategory()

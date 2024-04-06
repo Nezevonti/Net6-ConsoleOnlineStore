@@ -21,7 +21,10 @@ namespace StoreDAL.Repository
 
         public void Add(User entity)
         {
-            entity.Password = entity.Password.ToArray().Reverse().ToString();//Not SRP, add encryptor class
+            char[] stringArr = entity.Password.ToCharArray();
+            Array.Reverse(stringArr);
+            entity.Password = new string(stringArr);//Not SRP, add encryptor class
+
             dbSet.Add(entity);
             context.SaveChanges();
         }

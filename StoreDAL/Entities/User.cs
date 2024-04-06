@@ -29,6 +29,7 @@ namespace StoreDAL.Entities
 
         public User(int id, string name, string lastName, string login, string password, int roleId) : base(id)
         {
+            this.Id = id;
             this.Name = name;
             this.LastName = lastName;
             this.Login = login;

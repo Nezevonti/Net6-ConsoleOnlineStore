@@ -32,7 +32,7 @@ namespace StoreBLL.Services
         public IEnumerable<AbstractModel> GetAll()
         {
             return repository.GetAll().Select(x=>new UserRoleModel(x.Id,x.RoleName));
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
         public AbstractModel GetById(int id)
         {

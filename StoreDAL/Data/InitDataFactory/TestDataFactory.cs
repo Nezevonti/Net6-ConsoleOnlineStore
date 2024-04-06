@@ -203,11 +203,12 @@ namespace StoreDAL.Data.InitDataFactory
         {
             return new[]
             {
-                new User(1, "John", "Doe", "johndoe123", "password123", 3),
-                new User(2, "Jane", "Smith", "janesmith456", "mypassword", 2),
-                new User(3, "Michael", "Johnson", "mikej88", "secretword", 3),
-                new User(4, "Emily", "Williams", "emilyw", "pass1234", 1),
-                new User(5, "David", "Brown", "dbrown", "brownie123", 2)
+                new User(1, "Admin", "Admin", "Admin", "admin123", 1),
+                new User(2, "Guest", "Guest", "guest", "guest", 3),
+                new User(3, "Jane", "Smith", "janesmith456", "mypassword", 2),
+                new User(4, "Michael", "Johnson", "mikej88", "secretword", 2),
+                new User(5, "Emily", "Williams", "emilyw", "pass1234", 2),
+                new User(6, "David", "Brown", "dbrown", "brownie123", 2)
             };
         }
         public override UserRole[] GetUserRoleData()
