@@ -1,4 +1,6 @@
-﻿using StoreDAL.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using StoreDAL.Data;
+using StoreDAL.Entities;
 using StoreDAL.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -8,41 +10,54 @@ using System.Threading.Tasks;
 
 namespace StoreDAL.Repository
 {
-    public class OrderDetailRepository : IOrderDetailRepository
+    public class OrderDetailRepository : AbstractRepository,IOrderDetailRepository
     {
+
+        private readonly DbSet<OrderDetail> dbSet;
+
+        public OrderDetailRepository(StoreDbContext context) : base(context)
+        {
+            this.dbSet = context.Set<OrderDetail>();
+        }
+
         public void Add(OrderDetail entity)
         {
-            throw new NotImplementedException();
+            this.dbSet.Add(entity);
+            context.SaveChanges();
         }
 
         public void Delete(OrderDetail entity)
         {
-            throw new NotImplementedException();
+            this.dbSet.Remove(entity);
+            context.SaveChanges();
         }
 
         public void DeleteById(int id)
         {
-            throw new NotImplementedException();
+            var entity = GetById(id);
+
+            this.Delete(entity);
         }
 
         public IEnumerable<OrderDetail> GetAll()
         {
-            throw new NotImplementedException();
+            return dbSet.ToList();
         }
 
         public IEnumerable<OrderDetail> GetAll(int pageNumber, int rowCount)
         {
-            throw new NotImplementedException();
+            return this.GetAll().Skip(pageNumber * rowCount).Take(rowCount);
         }
 
         public OrderDetail GetById(int id)
         {
-            throw new NotImplementedException();
+            return this.dbSet.First(x => x.Id == id);
         }
 
         public void Update(OrderDetail entity)
         {
-            throw new NotImplementedException();
+            dbSet.Update(entity);
+            context.SaveChanges();
         }
     }
 }

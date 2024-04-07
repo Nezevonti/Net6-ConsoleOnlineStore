@@ -53,8 +53,8 @@ namespace StoreDAL.Repository
         {
             try
             {
-                var entity = new Product();
-                entity.Id = id;
+                var entity = GetById(id);
+
                 this.Delete(entity);
             }
             catch (Exception e)
@@ -75,7 +75,7 @@ namespace StoreDAL.Repository
 
         public Product GetById(int id)
         {
-            return dbSet.Find(id);
+            return this.dbSet.First(x => x.Id == id);
         }
 
         public void Update(Product entity)

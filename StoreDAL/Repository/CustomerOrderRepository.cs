@@ -1,4 +1,6 @@
-﻿using StoreDAL.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using StoreDAL.Data;
+using StoreDAL.Entities;
 using StoreDAL.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -8,41 +10,52 @@ using System.Threading.Tasks;
 
 namespace StoreDAL.Repository
 {
-    public class CustomerOrderRepository : ICustomerOrderRepository
+    public class CustomerOrderRepository : AbstractRepository,ICustomerOrderRepository
     {
+        private readonly DbSet<CustomerOrder> dbSet;
+
+        public CustomerOrderRepository(StoreDbContext context): base(context)
+        {
+            this.dbSet = context.Set<CustomerOrder>();
+        }
         public void Add(CustomerOrder entity)
         {
-            throw new NotImplementedException();
+            this.dbSet.Add(entity);
+            context.SaveChanges();
         }
 
         public void Delete(CustomerOrder entity)
         {
-            throw new NotImplementedException();
+            this.dbSet.Remove(entity);
+            context.SaveChanges();
         }
 
         public void DeleteById(int id)
         {
-            throw new NotImplementedException();
+            var entity = GetById(id);
+
+            this.Delete(entity);
         }
 
         public IEnumerable<CustomerOrder> GetAll()
         {
-            throw new NotImplementedException();
+            return dbSet.ToList();
         }
 
         public IEnumerable<CustomerOrder> GetAll(int pageNumber, int rowCount)
         {
-            throw new NotImplementedException();
+            return this.GetAll().Skip(pageNumber * rowCount).Take(rowCount);
         }
 
         public CustomerOrder GetById(int id)
         {
-            throw new NotImplementedException();
+            return this.dbSet.First(x => x.Id == id);
         }
 
         public void Update(CustomerOrder entity)
         {
-            throw new NotImplementedException();
+            dbSet.Update(entity);
+            context.SaveChanges();
         }
     }
 }
