@@ -5,6 +5,7 @@ using StoreBLL.Services;
 using StoreDAL.Data;
 using StoreDAL.Data.InitDataFactory;
 using StoreDAL.Entities;
+using System.Runtime.CompilerServices;
 
 namespace ConsoleApp1;
 
@@ -37,6 +38,16 @@ public static class UserMenuController
     public static StoreDbContext Context
     { 
         get { return context; } 
+    }
+
+    public static UserRoles UserRole
+    {
+        get { return userRole; }
+    }
+
+    public static int UserId
+    {
+        get { return userId; }
     }
     public static void Login() //Fix!
     {

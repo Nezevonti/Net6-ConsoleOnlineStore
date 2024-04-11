@@ -37,7 +37,17 @@ namespace ConsoleApp.Controllers
         public static void ShowAllProducts()
         {
             var service = new ProductService(context);
-            var ContextMenu = new ContextMenu(new GuestContextMenuHandler(service,InputHelper.ReadProductModel),service.GetAll);
+            var role = UserMenuController.UserRole;
+
+            ContextMenu ContextMenu;
+            if (role == UserRoles.Administrator)
+            {
+                ContextMenu = new ContextMenu(new AdminContextMenuHandler(service, InputHelper.ReadProductModel), service.GetAll);
+            }
+            else
+            {
+                ContextMenu = new ContextMenu(new GuestContextMenuHandler(service, InputHelper.ReadProductModel), service.GetAll);
+            }
             ContextMenu.Run();
 
         }

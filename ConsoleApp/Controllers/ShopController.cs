@@ -36,7 +36,23 @@ namespace ConsoleApp.Services
         }
         public static void ShowAllOrders()
         {
-            throw new NotImplementedException();
+            var role = UserMenuController.UserRole;
+            var userId = UserMenuController.UserId;
+            var service = new CustomerOrderService(context);
+
+            ContextMenu ContextMenu;
+
+            if (role == UserRoles.Administrator)
+            {
+                ContextMenu = new ContextMenu(new AdminContextMenuHandler(service, InputHelper.ReadCustomerOrderModel), service.GetAll);
+            }
+            else
+            {
+                ContextMenu = new ContextMenu(new GuestContextMenuHandler(service, InputHelper.ReadCustomerOrderModel), service.GetAll);
+            }
+            ContextMenu.Run();
+            //if(role)
+            //throw new NotImplementedException();
         }
 
         public static void AddOrderDetails()

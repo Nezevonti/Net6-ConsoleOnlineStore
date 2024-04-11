@@ -25,6 +25,20 @@ namespace ConsoleApp.Helpers
             return new ProductModel(id, Int16.Parse(title_id), Int16.Parse(manufacturer_id), decimal.Parse(unit_price), comment);
         }
 
+        public static CustomerOrderModel ReadCustomerOrderModel()
+        {
+            Console.WriteLine("Input order Id");
+            var id = int.Parse(Console.ReadLine());
+            Console.WriteLine("Input customer Id");
+            var customerId = int.Parse(Console.ReadLine());
+            Console.WriteLine("Input operation time");
+            var operationTime = Console.ReadLine();
+            Console.WriteLine("Input order state Id");
+            var stateId = int.Parse(Console.ReadLine());
+
+            return new CustomerOrderModel(id, customerId, operationTime, stateId);
+        }
+
         public static CategoryModel ReadCategoryiModel()
         {
             throw new NotImplementedException();
